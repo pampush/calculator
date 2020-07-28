@@ -1,4 +1,4 @@
-/* try to code with inheritance next time*/
+/* try to code using inheritance next time*/
 "use strict"
 function Calculator() {
   this.left = [];
@@ -81,35 +81,18 @@ function Calculator() {
   this.computeUn = function() {
     if(!this.method)
       return;     
-    let numL = 0
-
-    function arrtoNum(arr) {
-      let num = 0;
-      for(let i = arr.length - 1, base = 1; i >= 0; i--, base = base*10) {
-        num += arr[i] * base;
-      } 
-      return num;
-    }
-
-    numL = arrtoNum(this.left);
+    let numL = Number(this.left.join());
     console.log (this.method(numL));
   };
 
-  this.computeBin = function() { 
+  this.computeBin = function() {
     if(!this.method)
       return;  
     let numL = 0, numR = 0;
 
-    function arrtoNum(arr) {
-      let num = 0;
-      for(let i = arr.length - 1, base = 1; i >= 0; i--, base = base*10) {
-        num += arr[i] * base;
-      } 
-      return num;
-    }
-
-    numL = arrtoNum(this.left);
-    numR = arrtoNum(this.right);
+    numL = Number(this.left.join(''));
+    numR = Number(this.right.join(''));
+    
     console.log (this.method(numL, numR));
 };
 
@@ -146,12 +129,13 @@ function Buttons() {
 
 let buttons = new Buttons();
 let calc = new Calculator();
-let arr = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'zero': 0 };
+let arr = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 
+          'seven': 7, 'eight': 8, 'nine': 9, 'zero': 0, 'point': '.' };
+
 for(let key in arr){
   buttons.addButton(key, document.querySelector(`input[name="${key}"]`));
   buttons.addListener(buttons[key], calc.update(arr[key]));
 }
-
 
 buttons.addButton('compute', document.querySelector("input[name='res']"));
 buttons.addListener(buttons.compute, () => { if(calc.bin) calc.computeBin(); else calc.computeUn(); calc.reset();});
@@ -161,6 +145,3 @@ buttons.addListeners(buttons.operations, calc.decor);
 
 buttons.addButton('clear', document.querySelector("input[name='clear']"));
 buttons.addListener(buttons.clear, calc.reset);
-
-//buttons.addButton('two', document.querySelector("input[name='two']"));
-//buttons.addListener(buttons.two, calc.update(2)); 
