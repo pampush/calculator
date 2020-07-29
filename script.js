@@ -13,7 +13,7 @@ function Calculator() {
   this.bin = true;
   this.history = [];
   this.reset = function () {
-    let elem = document.querySelector("textarea");//let elem = document.querySelector("input[type='textarea']");
+    let elem = document.querySelector(".grid-container__text");//let elem = document.querySelector("input[type='textarea']");
     elem.value = '';
     this.flag = 0;
     this.bin = true;
@@ -30,7 +30,7 @@ function Calculator() {
     if(this.left.length == 0 )
       return;
     
-    let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
+    let a = document.querySelector(".grid-container__text");//let a = document.querySelector("input[type='textarea']");
     a.value += ` ${event.currentTarget.value} `;
 
     this.flag = 1;
@@ -97,7 +97,7 @@ function Calculator() {
   };
   
   this.view = function(result) {
-    let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
+    let a = document.querySelector(".grid-container__text");//let a = document.querySelector("input[type='textarea']");
     a.value = `${result}`;
   }
 
@@ -107,25 +107,26 @@ function Calculator() {
     let numL = 0, numR = 0;
     numL = Number(this.left.join(''));
     numR = Number(this.right.join(''));
-    //console.log(this.left, this.right, this.method(numL, numR));
-    this.left = this.method(numL, numR);
-
-    this.history.push(`${document.querySelector('textarea').value} = ${this.left}`);
-    //this.history += ` = ${this.left}`;
-
-    this.view( this.left );
     
-    /* continue comp and history */ 
+    this.left = this.method(numL, numR); // left = result
+    this.log();
+    this.view( this.left );
+
     this.right = [];
     this.left = Array.from(String(this.left));
     let elems = document.querySelectorAll('.digit');
     elems.forEach(elem => elem.classList.add('nonClickable'));
-
   };
+
+  this.log = function () {
+    //this.history.push(`${document.querySelector('.grid-container__text').value} = ${this.left}`);
+    let log = document.querySelector('.grid-container__log-pop');
+    log.innerHTML += `${document.querySelector('.grid-container__text').value} = ${this.left} \n`; 
+  }
 
   this.update = function(value) { 
     function upd () {
-      let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
+      let a = document.querySelector(".grid-container__text");//let a = document.querySelector("input[type='textarea']");
       a.value += `${value}`;
       if(this.flag == 0)
         this.left.push(value);
@@ -172,3 +173,8 @@ buttons.addListeners(buttons.operations, calc.decor);
 
 buttons.addButton('clear', document.querySelector("input[name='clear']"));
 buttons.addListener(buttons.clear, calc.reset);
+
+buttons.addButton('logButton', document.querySelectorAll('.grid-container__log-button'));
+buttons.addListeners(buttons.logButton, ()=> { let elem = document.querySelector('.grid-container__log-pop');
+elem.classList.toggle('grid-container__log-pop-view');
+});
