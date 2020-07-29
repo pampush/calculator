@@ -13,7 +13,7 @@ function Calculator() {
     this.flag = 0;
     this.bin = true;
     let elems = document.querySelectorAll('.oper');
-    elems.forEach(elem => elem.classList.toggle('nonClickable'));
+    elems.forEach(elem => elem.classList.remove('nonClickable'));
     this.left = [];
     this.right = [];
   };
@@ -30,7 +30,7 @@ function Calculator() {
     this.method = this[event.currentTarget.name]();
 
     let elems = document.querySelectorAll('.oper');
-    elems.forEach(elem => elem.classList.toggle('nonClickable'));
+    elems.forEach(elem => elem.classList.add('nonClickable'));
   }
 
   this.sum = function () {

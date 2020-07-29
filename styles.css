@@ -1,3 +1,29 @@
 .nonClickable {
   pointer-events: none;
 }
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.grid-container__digit {
+  grid-area: 3 / 1 / span 4 / span 3;
+  display: grid;
+  grid-template: repeat(4, 1fr) / repeat(3, 1fr);
+}
+
+.grid-container {
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template: repeat(6, 1fr)/ repeat(4, 1fr);
+}
+
+.grid-container__text {
+  grid-area: 1 / 1 / span 1 / span 4;
+}
+
+
