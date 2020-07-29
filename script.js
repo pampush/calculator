@@ -1,4 +1,7 @@
 /* try to code using inheritance next time*/
+/* todo: computations history */
+/* todo: continious computations 3+2*3 */
+/* todo: float nums approximation 7.1 *3 = 21.29999999997 */
 "use strict"
 function Calculator() {
   this.left = [];
@@ -8,7 +11,7 @@ function Calculator() {
   this.bin = true;
 
   this.reset = function () {
-    let elem = document.querySelector("input[type='text']");
+    let elem = document.querySelector("textarea");//let elem = document.querySelector("input[type='textarea']");
     elem.value = '';
     this.flag = 0;
     this.bin = true;
@@ -21,8 +24,8 @@ function Calculator() {
   this.decor = function () {
     if(this.left.length == 0 )
       return;
-    let a = document.querySelector("input[type='text']");
-    a.value += `${event.currentTarget.value}`;
+      let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
+    a.value += ` ${event.currentTarget.value} `;
 
     this.flag = 1;
     if(event.currentTarget.name == 'fact')
@@ -53,7 +56,7 @@ function Calculator() {
 
   this.mul = function() {
    return function (a, b) {
-     return a*b;
+     return a * b; 
    }
   }
   
@@ -82,8 +85,13 @@ function Calculator() {
     if(!this.method)
       return;     
     let numL = Number(this.left.join());
-    console.log (this.method(numL));
+    this.view( this.method(numL) );
   };
+  
+  this.view = function(result) {
+    let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
+    a.value += ` = ${result}`;
+  }
 
   this.computeBin = function() {
     if(!this.method)
@@ -92,13 +100,12 @@ function Calculator() {
 
     numL = Number(this.left.join(''));
     numR = Number(this.right.join(''));
-    
-    console.log (this.method(numL, numR));
+    this.view( this.method(numL, numR) );
 };
 
   this.update = function(value) { 
     function upd () {
-      let a = document.querySelector("input[type='text']");
+      let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
       a.value += `${value}`;
       if(this.flag == 0)
         this.left.push(value);
@@ -138,7 +145,7 @@ for(let key in arr){
 }
 
 buttons.addButton('compute', document.querySelector("input[name='res']"));
-buttons.addListener(buttons.compute, () => { if(calc.bin) calc.computeBin(); else calc.computeUn(); calc.reset();});
+buttons.addListener(buttons.compute, () => { if(calc.bin) calc.computeBin(); else calc.computeUn(); });
 
 buttons.addButton('operations', document.querySelectorAll('.oper'));
 buttons.addListeners(buttons.operations, calc.decor);

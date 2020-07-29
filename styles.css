@@ -1,3 +1,6 @@
+html {
+  font-size: 10px;
+}
 .nonClickable {
   pointer-events: none;
 }
@@ -7,6 +10,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-size: 3rem;
 }
 
 .grid-container__digit {
@@ -20,10 +24,39 @@
   height: 600px;
   display: grid;
   grid-template: repeat(6, 1fr)/ repeat(4, 1fr);
+  border: 1px solid black;
+  box-shadow: 1px 1px 5px black;
 }
 
 .grid-container__text {
   grid-area: 1 / 1 / span 1 / span 4;
+  border: none;
+  overflow: auto;
+  outline: none;
+  resize: none; 
+  text-align: right;
+  font-size: 4rem;
+  padding-right: 60px;
+  padding-left: 50px;
+  box-shadow: 0 5px 5px -5px black;
 }
 
+input {
+  border:none;
+  outline: none;
+  padding: 0;
+  background-color: rgb(244, 255, 248);
+}
+
+input:before {
+  display: block;
+  content: '';
+  width: 5rem;
+  height: 5rem;
+  background-color: sienna;
+}
+
+input:hover:before {
+  display: block;
+}
 
