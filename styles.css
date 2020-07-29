@@ -1,9 +1,6 @@
 html {
   font-size: 10px;
 }
-.nonClickable {
-  pointer-events: none;
-}
 
 .flex-container {
   display: flex;
@@ -11,6 +8,10 @@ html {
   align-items: center;
   height: 100vh;
   font-size: 3rem;
+}
+
+.nonClickable {
+  pointer-events: none;
 }
 
 .grid-container__digit {

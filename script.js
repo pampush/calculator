@@ -1,7 +1,9 @@
 /* try to code using inheritance next time*/
 /* todo: computations history */
-/* todo: continious computations 3+2*3 */
+/* todo: continious computations 3+2*3 - done*/
 /* todo: float nums approximation 7.1 *3 = 21.29999999997 */
+/* todo: support negative nums */
+/* plus two buttons: minus and history */
 "use strict"
 function Calculator() {
   this.left = [];
@@ -9,13 +11,16 @@ function Calculator() {
   this.flag = 0;
   this.method = null;
   this.bin = true;
-
+  this.history = [];
   this.reset = function () {
     let elem = document.querySelector("textarea");//let elem = document.querySelector("input[type='textarea']");
     elem.value = '';
     this.flag = 0;
     this.bin = true;
     let elems = document.querySelectorAll('.oper');
+    elems.forEach(elem => elem.classList.remove('nonClickable'));
+    
+    elems = document.querySelectorAll('.digit');
     elems.forEach(elem => elem.classList.remove('nonClickable'));
     this.left = [];
     this.right = [];
@@ -24,7 +29,8 @@ function Calculator() {
   this.decor = function () {
     if(this.left.length == 0 )
       return;
-      let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
+    
+    let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
     a.value += ` ${event.currentTarget.value} `;
 
     this.flag = 1;
@@ -32,8 +38,10 @@ function Calculator() {
       this.bin = false;
     this.method = this[event.currentTarget.name]();
 
-    let elems = document.querySelectorAll('.oper');
-    elems.forEach(elem => elem.classList.add('nonClickable'));
+    let elems = document.querySelectorAll('.digit');
+    elems.forEach(elem => elem.classList.remove('nonClickable'));
+    /* let elems = document.querySelectorAll('.oper');
+    elems.forEach(elem => elem.classList.add('nonClickable')); */
   }
 
   this.sum = function () {
@@ -90,18 +98,30 @@ function Calculator() {
   
   this.view = function(result) {
     let a = document.querySelector("textarea");//let a = document.querySelector("input[type='textarea']");
-    a.value += ` = ${result}`;
+    a.value = `${result}`;
   }
 
   this.computeBin = function() {
     if(!this.method)
       return;  
     let numL = 0, numR = 0;
-
     numL = Number(this.left.join(''));
     numR = Number(this.right.join(''));
-    this.view( this.method(numL, numR) );
-};
+    //console.log(this.left, this.right, this.method(numL, numR));
+    this.left = this.method(numL, numR);
+
+    this.history.push(`${document.querySelector('textarea').value} = ${this.left}`);
+    //this.history += ` = ${this.left}`;
+
+    this.view( this.left );
+    
+    /* continue comp and history */ 
+    this.right = [];
+    this.left = Array.from(String(this.left));
+    let elems = document.querySelectorAll('.digit');
+    elems.forEach(elem => elem.classList.add('nonClickable'));
+
+  };
 
   this.update = function(value) { 
     function upd () {
