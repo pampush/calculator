@@ -76,7 +76,7 @@ function Calculator() {
 
   this.mod = function () {
     return function(a, b) {
-      return a % b;
+      return Number.prototype.mod(a, b);
     }
   }
 
@@ -154,6 +154,11 @@ function Buttons() {
     elems.forEach(elem => elem.addEventListener('click', func));
   }
 }
+
+Number.prototype.mod = function(a, b) {
+  return ((a % b) + b) % b;
+};
+
 
 let buttons = new Buttons();
 let calc = new Calculator();
