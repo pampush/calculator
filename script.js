@@ -4,44 +4,99 @@
 /* todo: float nums approximation 7.1 *3 = 21.29999999997 */
 /* todo: support negative nums */
 /* plus two buttons: minus and history */
+
+/*  add classes to inputs, use classes for js 
+*   check eval(), assign all dom elements at the beginning,
+*   placeholder attr instead of value attr in input element
+*
+*/
 "use strict"
 function Calculator() {
-  this.left = [];
-  this.right = [];
-  this.flag = 0;
+  this.prevOperand = '';
+  this.curOperand = '';
   this.method = null;
-  this.bin = true;
-  this.history = [];
-  this.reset = function () {
-    let elem = document.querySelector(".grid-container__text");//let elem = document.querySelector("input[type='textarea']");
-    elem.value = '';
-    this.flag = 0;
-    this.bin = true;
-    let elems = document.querySelectorAll('.oper');
-    elems.forEach(elem => elem.classList.remove('nonClickable'));
-    
-    elems = document.querySelectorAll('.digit');
-    elems.forEach(elem => elem.classList.remove('nonClickable'));
-    this.left = [];
-    this.right = [];
-  };
-
-  this.decor = function () {
-    if(this.left.length == 0 )
+  //this.displayNode  = document.querySelector()
+  this.binaryOperator = 'true';
+  
+  this.updateView = function(char) { // divide into two functions: appendOp and updateDisplay
+    if(char == '.' && this.curOperand.includes('.'))
+      return;
+    if(this.curOperand.length >= 15)
       return;
     
-    let a = document.querySelector(".grid-container__text");//let a = document.querySelector("input[type='textarea']");
-    a.value += ` ${event.currentTarget.value} `;
+    this.curOperand += char;
+    expressionNode.textContent += char;  
+  };
+  
+  this.operator = function(func) {
+    if(this.curOperand == '')
+      return;
 
-    this.flag = 1;
-    if(event.currentTarget.name == 'fact')
-      this.bin = false;
-    this.method = this[event.currentTarget.name]();
+    this.binaryOperator = true;
 
-    let elems = document.querySelectorAll('.digit');
-    elems.forEach(elem => elem.classList.remove('nonClickable'));
-    /* let elems = document.querySelectorAll('.oper');
-    elems.forEach(elem => elem.classList.add('nonClickable')); */
+    if(event.target.value == '!') {
+      this.binaryOperator = false;
+    }
+    if(this.prevOperand != '') {
+      if(this.binaryOperator)
+        this.operate();
+      else { // unary operator handler ...
+        this.operate();
+        this.method = this[func]();
+        this.prevOperand = this.curOperand;
+        this.curOperand = '';
+        expressionNode.textContent += event.target.value;
+        this.operateUn();
+        return;
+      }
+    }
+
+    this.prevOperand = this.curOperand;
+    this.curOperand = '';
+
+    expressionNode.textContent += event.target.value;
+    this.method = this[func](); // func = event.target.name
+  }
+
+  this.operate = function() {
+    if(this.curOperand == '' || this.prevOperand == '') 
+      return;
+    const cur = Number(this.curOperand); 
+    const prev = Number(this.prevOperand);
+    let res = this.method(prev, cur);
+    this.curOperand = `${res}`;
+    if(res.toString().length >= 15)
+      res = res.toPrecision(5);
+    this.prevOperand = '';  
+    this.method = null;
+    resultNode.textContent = ` = ${res}`;
+    //expressionNode.textContent = ' ';   
+  }
+
+  this.operateUn = function() {
+    const prev = Number(this.prevOperand);
+    const res = this.method(prev);
+    this.curOperand = `${res}`;
+    this.prevOperand = '';
+    this.method = null; 
+    resultNode.textContent = ` = ${res}`;
+  }
+  this.updateResult = function(){
+    expressionNode.textContent = this.curOperand;
+  } 
+  this.clear = function() {
+    this.prevOperand = '';
+    this.curOperand = '';
+    expressionNode.textContent = '';
+    resultNode.textContent = '0';
+    this.method = null;
+  }
+
+  this.backspace = function() {
+    if(this.curOperand == '' || expressionNode.textContent == '')
+      return;
+    this.curOperand = this.curOperand.slice(0, -1);
+    expressionNode.textContent = expressionNode.textContent.slice(0, -1);
   }
 
   this.sum = function () {
@@ -88,98 +143,34 @@ function Calculator() {
     }
     return f;
   }
+}
 
-  this.computeUn = function() {
-    if(!this.method)
-      return;     
-    let numL = Number(this.left.join());
-    this.view( this.method(numL) );
-  };
   
-  this.view = function(result) {
-    let a = document.querySelector(".grid-container__text");//let a = document.querySelector("input[type='textarea']");
-    a.value = `${result}`;
-  }
-
-  this.computeBin = function() {
-    if(!this.method)
-      return;  
-    let numL = 0, numR = 0;
-    numL = Number(this.left.join(''));
-    numR = Number(this.right.join(''));
-    
-    this.left = this.method(numL, numR); // left = result
-    this.log();
-    this.view( this.left );
-
-    this.right = [];
-    this.left = Array.from(String(this.left));
-    let elems = document.querySelectorAll('.digit');
-    elems.forEach(elem => elem.classList.add('nonClickable'));
-  };
-
-  this.log = function () {
-    //this.history.push(`${document.querySelector('.grid-container__text').value} = ${this.left}`);
-    let log = document.querySelector('.grid-container__log-pop');
-    log.innerHTML += `${document.querySelector('.grid-container__text').value} = ${this.left} \n`; 
-  }
-
-  this.update = function(value) { 
-    function upd () {
-      let a = document.querySelector(".grid-container__text");//let a = document.querySelector("input[type='textarea']");
-      a.value += `${value}`;
-      if(this.flag == 0)
-        this.left.push(value);
-      else
-        this.right.push(value);
-    }
-    upd = upd.bind(this);
-    return upd;
-  }; 
-
-this.reset = this.reset.bind(this);
-this.decor = this.decor.bind(this);
-}
-
-function Buttons() {
-  this.addButton = function(name, elem) {
-    this[name] = elem;
-  }
-     
-  this.addListener = function(elem, func) {
-    elem.addEventListener('click', func);
-  }
-
-  this.addListeners = function(elems, func) {
-    elems.forEach(elem => elem.addEventListener('click', func));
-  }
-}
-
 Number.prototype.mod = function(a, b) {
   return ((a % b) + b) % b;
 };
 
-
-let buttons = new Buttons();
 let calc = new Calculator();
-let arr = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 
-          'seven': 7, 'eight': 8, 'nine': 9, 'zero': 0, 'point': '.' };
 
-for(let key in arr){
-  buttons.addButton(key, document.querySelector(`input[name="${key}"]`));
-  buttons.addListener(buttons[key], calc.update(arr[key]));
-}
+const digits = document.querySelectorAll('.digits'),
+      operators = document.querySelectorAll('.operators'),
+      resultNode = document.querySelector('.result'),
+      expressionNode = document.querySelector('.expression'),
+      equalNode = document.querySelector('.equal'),
+      clearNode = document.querySelector('.clear'),
+      backspaceNode = document.querySelector('.backspace');
 
-buttons.addButton('compute', document.querySelector("input[name='res']"));
-buttons.addListener(buttons.compute, () => { if(calc.bin) calc.computeBin(); else calc.computeUn(); });
-
-buttons.addButton('operations', document.querySelectorAll('.oper'));
-buttons.addListeners(buttons.operations, calc.decor);
-
-buttons.addButton('clear', document.querySelector("input[name='clear']"));
-buttons.addListener(buttons.clear, calc.reset);
-
-buttons.addButton('logButton', document.querySelectorAll('.grid-container__log-button'));
-buttons.addListeners(buttons.logButton, ()=> { let elem = document.querySelector('.grid-container__log-pop');
-elem.classList.toggle('grid-container__log-pop-view');
-});
+for(const digitsElem of digits)
+  digitsElem.addEventListener('click', () => calc.updateView(digitsElem.value));
+for(const operatorsElem of operators)
+  operatorsElem.addEventListener('click', () => calc.operator(operatorsElem.name));
+ 
+equalNode.addEventListener('click', () => { 
+  if(calc.binaryOperator) 
+    calc.operate(); 
+  else 
+    calc.operateUn();
+  calc.updateResult();
+  });  
+clearNode.addEventListener('click', () => calc.clear());
+backspaceNode.addEventListener('click', () => calc.backspace());

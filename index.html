@@ -1,39 +1,51 @@
 <html>
   <head>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="normilize.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <div class="flex-container">
       <div class="grid-container">
-        <textarea class="grid-container__log-pop"></textarea>
-        <input class="grid-container__log-button" type="button" value="history">
-        <div class="placeholder"> </div>
-        <!-- <textarea class="grid-container__log"></textarea> -->
-        <input class="oper" type="button" value="!" name="fact">
-        <input class="oper" type="button" value="^" name="pow">
-        <input class="oper" type="button" value="mod" name="mod">
-        <input class="oper" type="button" value="+" name="sum">
-        <input class="oper" type="button" value="-" name="sub">
-        <input class="oper" type="button" value="*" name="mul">
-        <input class="oper" type="button" value="/" name="div">
-        
-        <div class="grid-container__digit">
-          <input class="digit" type="button" value="1" name="one">
-          <input class="digit" type="button" value="2" name="two">
-          <input class="digit" type="button" value="3" name="three">
-          <input class="digit" type="button" value="4" name="four">
-          <input class="digit" type="button" value="5" name="five">
-          <input class="digit" type="button" value="6" name="six">
-          <input class="digit" type="button" value="7" name="seven">
-          <input class="digit" type="button" value="8" name="eight">
-          <input class="digit" type="button" value="9" name="nine">
-          <input class="digit" type="button" value="0" name="zero">
-          <input class="digit" type="button" value="." name="point">
-          <input type="button" value="=" name="res">
+        <textarea class="grid-container__log-pop">
+          
+        </textarea>
+        <div class="grid-container__text">
+           <div class="expression"></div>
+           <div class="result" data-placeholder=" ">0</div>
         </div>
-        <input type="button" value="clear" name="clear">
-        <textarea class="grid-container__text" readonly></textarea>
+        <button class="grid-container__log-button" type="button" value="history">
+          <svg height="50px" width="40px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="history" class="svg-inline--fa fa-history fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M504 255.531c.253 136.64-111.18 248.372-247.82 248.468-59.015.042-113.223-20.53-155.822-54.911-11.077-8.94-11.905-25.541-1.839-35.607l11.267-11.267c8.609-8.609 22.353-9.551 31.891-1.984C173.062 425.135 212.781 440 256 440c101.705 0 184-82.311 184-184 0-101.705-82.311-184-184-184-48.814 0-93.149 18.969-126.068 49.932l50.754 50.754c10.08 10.08 2.941 27.314-11.313 27.314H24c-8.837 0-16-7.163-16-16V38.627c0-14.254 17.234-21.393 27.314-11.314l49.372 49.372C129.209 34.136 189.552 8 256 8c136.81 0 247.747 110.78 248 247.531zm-180.912 78.784l9.823-12.63c8.138-10.463 6.253-25.542-4.21-33.679L288 256.349V152c0-13.255-10.745-24-24-24h-16c-13.255 0-24 10.745-24 24v135.651l65.409 50.874c10.463 8.137 25.541 6.253 33.679-4.21z"></path></svg> 
+        </button>
+        <div class="placeholder"> </div>
+        <button class="operators" type="button" value="-" name="sub"> - </button>
+        <button class="operators" type="button" value="+" name="sum"> + </button>
+        <button class="operators" type="button" value="x" name="mul"> &#10006 </button>
+        <button class="operators" type="button" value="/" name="div"> / </button>
+        <button class="backspace" type="button" name="backspace">
+          <svg height="50px" width="50px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="backspace" class="svg-inline--fa fa-backspace fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M576 64H205.26A63.97 63.97 0 0 0 160 82.75L9.37 233.37c-12.5 12.5-12.5 32.76 0 45.25L160 429.25c12 12 28.28 18.75 45.25 18.75H576c35.35 0 64-28.65 64-64V128c0-35.35-28.65-64-64-64zm-84.69 254.06c6.25 6.25 6.25 16.38 0 22.63l-22.62 22.62c-6.25 6.25-16.38 6.25-22.63 0L384 301.25l-62.06 62.06c-6.25 6.25-16.38 6.25-22.63 0l-22.62-22.62c-6.25-6.25-6.25-16.38 0-22.63L338.75 256l-62.06-62.06c-6.25-6.25-6.25-16.38 0-22.63l22.62-22.62c6.25-6.25 16.38-6.25 22.63 0L384 210.75l62.06-62.06c6.25-6.25 16.38-6.25 22.63 0l22.62 22.62c6.25 6.25 6.25 16.38 0 22.63L429.25 256l62.06 62.06z"></path></svg>   
+        </button>
+        <button class="operators" type="button" value="mod" name="mod"> mod </button>
+        <button class="operators" type="button" value="!" name="fact"> ! </button> 
+        <button class="operators" type="button" value="^" name="pow"> x<sup>y</sup> </button>
+         
+        <div class="grid-container__digit">
+          <button class="digits" type="button" value="1" name="one"> 1 </button>
+          <button class="digits" type="button" value="2" name="two"> 2 </button>
+          <button class="digits" type="button" value="3" name="three"> 3 </button>
+          <button class="digits" type="button" value="4" name="four"> 4 </button>
+          <button class="digits" type="button" value="5" name="five"> 5 </button>
+          <button class="digits" type="button" value="6" name="six"> 6 </button>
+          <button class="digits" type="button" value="7" name="seven"> 7 </button>
+          <button class="digits" type="button" value="8" name="eight"> 8 </button>
+          <button class="digits" type="button" value="9" name="nine"> 9 </button>
+          <button class="digits" type="button" value="0" name="zero"> 0 </button>
+          <button class="digits" type="button" value="." name="point"> . </button>
+          <button class="equal" type="button" value="=" name="equal"> = </button>
+        </div>
+
+        <button class="clear" type="button" value="clear" name="clear"> AC </button>
+        
         <!-- <input class="grid-container__text" type="textarea" readonly> -->
       </div>
     </div>

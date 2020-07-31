@@ -26,7 +26,8 @@ html {
 }
 
 .placeholder {
-  grid-area: 3 / 1 / span 4 / span 1;
+  grid-area: 4 / 1 / span 3 / span 1;
+  background-color: rgb(244, 255, 248);
 }
 
 .grid-container__digit {
@@ -52,15 +53,11 @@ html {
   grid-area: 2 / 1 / span 1 / span 1;
 }
 
-textarea {
-  border: none;
-  overflow: auto;
-  outline: none;
-  resize: none;
-}
-
 .grid-container__text {
-  grid-area: 1 / 1 / span 1 / span 5;  
+  grid-area: 1 / 1 / span 1 / span 5; 
+  display: flex;
+  flex-direction: column;
+   
   text-align: right;
   font-size: 4rem;
   padding-right: 60px;
@@ -68,12 +65,22 @@ textarea {
   box-shadow: 0 5px 5px -5px black;
 }
 
-input {
+.expression {
+  overflow: hidden;;
+}
+
+.grid-container__text > div {
+  flex-grow: 1;
+}
+
+button {
   border:none;
   outline: none;
   padding: 0;
   background-color: rgb(244, 255, 248);
-}
+  user-select:none;
+  font-family: 'Times New Roman', Times, serif;
+} 
 
 input:before {
   display: block;
