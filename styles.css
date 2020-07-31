@@ -7,7 +7,7 @@ html {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-size: 3rem;
+  font-size: 4rem;
 }
 
 .nonClickable {
@@ -15,19 +15,19 @@ html {
 }
 
 .grid-container {
-  margin-right: 20rem;
-  position:relative;
-  width: 700px;
-  height: 600px;
   display: grid;
   grid-template: repeat(6, 1fr)/ repeat(5, 1fr);
+  height: 600px;
+  width: 600px;
+  margin-right: 20rem;
+  position:relative;
   border: 1px solid black;
   box-shadow: 1px 1px 5px black;
+  background: radial-gradient(circle, rgba(238,174,202,1) 10%, rgba(148,187,233,1) 90%);
 }
 
 .placeholder {
   grid-area: 4 / 1 / span 3 / span 1;
-  background-color: rgb(244, 255, 248);
 }
 
 .grid-container__digit {
@@ -36,7 +36,49 @@ html {
   grid-template: repeat(4, 1fr) / repeat(3, 1fr);
 }
 
-.grid-container__log-pop {
+.grid-container__log-button {
+  grid-area: 2 / 1 / span 1 / span 1;
+}
+
+.grid-container__text {
+  grid-area: 1 / 1 / span 1 / span 5; 
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 4rem;
+  padding-right: 60px;
+  padding-left: 50px;
+  box-shadow: 0 5px 5px -5px black;
+  font: 4rem Roboto, sans-serif;
+  color: white; 
+  text-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+
+.grid-container__text > div {
+  flex-grow: 1;
+}
+
+button {
+  border:none;
+  outline: none;
+  padding: 0;
+  background-color: transparent;
+  user-select:none;
+  color: white;
+  font-family: Roboto, sans-serif ;
+  font-weight: 400;
+  text-shadow: 1px 1px 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.expression {
+  overflow: hidden;
+}
+
+.operators {
+  color: #bcff27;
+}
+
+.grid-container__log-popup {
   display: none;
   width: 25rem;
   height: 40rem;
@@ -48,49 +90,3 @@ html {
 .grid-container__log-pop-view {
   display: block;
 }
-
-.grid-container__log-button {
-  grid-area: 2 / 1 / span 1 / span 1;
-}
-
-.grid-container__text {
-  grid-area: 1 / 1 / span 1 / span 5; 
-  display: flex;
-  flex-direction: column;
-   
-  text-align: right;
-  font-size: 4rem;
-  padding-right: 60px;
-  padding-left: 50px;
-  box-shadow: 0 5px 5px -5px black;
-}
-
-.expression {
-  overflow: hidden;;
-}
-
-.grid-container__text > div {
-  flex-grow: 1;
-}
-
-button {
-  border:none;
-  outline: none;
-  padding: 0;
-  background-color: rgb(244, 255, 248);
-  user-select:none;
-  font-family: 'Times New Roman', Times, serif;
-} 
-
-input:before {
-  display: block;
-  content: '';
-  width: 5rem;
-  height: 5rem;
-  background-color: sienna;
-}
-
-input:hover:before {
-  display: block;
-}
-
