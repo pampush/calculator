@@ -1,0 +1,1 @@
+- [ ] Take view statements out of calc logic 

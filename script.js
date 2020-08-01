@@ -1,7 +1,3 @@
-/* 
-*   placeholder attr instead of value attr in input element
-*   take out display code in separate function  
-*/
 "use strict"
 function Calculator() {
   this.prevOperand = '';
@@ -9,12 +5,12 @@ function Calculator() {
   this.method = null;
   this.binaryOperator = 'true';
   
-  this.updateView = function(char) { // divide into two functions: appendOp and updateDisplay
-    if(char == '.' && this.curOperand.includes('.'))
+  this.updateView = function(char) { 
+    if(char == '.' && (this.curOperand.includes('.')  || this.curOperand == '')) // prevent leading '.' and multiple '.'
       return;
-    if(char == '0' && this.curOperand[0] == '0' && !this.curOperand.includes('.')) // prevent 00
+    if(Number.isInteger(Number(char)) && this.curOperand[0] == '0' && !this.curOperand.includes('.') ) // prevent leading zeros  
       return;
-    if(this.curOperand.length >= 15)
+    if(this.curOperand.length >= 15) 
       return;
     
     this.curOperand += char;
