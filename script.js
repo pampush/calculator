@@ -1,14 +1,6 @@
-/* try to code using inheritance next time*/
-/* todo: computations history */
-/* todo: continious computations 3+2*3 - done*/
-/* todo: float nums approximation 7.1 *3 = 21.29999999997 */
-/* todo: support negative nums */
-/* plus two buttons: minus and history */
-
-/*  add classes to inputs, use classes for js 
-*   check eval(), assign all dom elements at the beginning,
+/* 
 *   placeholder attr instead of value attr in input element
-*
+*   take out display code in separate function  
 */
 "use strict"
 function Calculator() {
@@ -20,7 +12,8 @@ function Calculator() {
   this.updateView = function(char) { // divide into two functions: appendOp and updateDisplay
     if(char == '.' && this.curOperand.includes('.'))
       return;
-    if(this.curOperand[0] = '0')
+    if(char == '0' && this.curOperand[0] == '0' && !this.curOperand.includes('.')) // prevent 00
+      return;
     if(this.curOperand.length >= 15)
       return;
     
