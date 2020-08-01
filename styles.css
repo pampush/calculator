@@ -8,6 +8,7 @@ html {
   align-items: center;
   height: 100vh;
   font-size: 4rem;
+  /* background-color: rgba(255, 244, 197, 0.938); */
 }
 
 .nonClickable {
@@ -19,15 +20,14 @@ html {
   grid-template: repeat(6, 1fr)/ repeat(5, 1fr);
   height: 600px;
   width: 600px;
-  margin-right: 20rem;
   position:relative;
-  border: 1px solid black;
-  box-shadow: 1px 1px 5px black;
+  border-radius: 1rem;
+  box-shadow: 1px 1px 7px black;
   background: radial-gradient(circle, rgba(238,174,202,1) 10%, rgba(148,187,233,1) 90%);
 }
 
 .placeholder {
-  grid-area: 4 / 1 / span 3 / span 1;
+  grid-area: 5 / 1 / span 2 / span 1;
 }
 
 .grid-container__digit {
@@ -44,6 +44,7 @@ html {
   grid-area: 1 / 1 / span 1 / span 5; 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   text-align: right;
   font-size: 4rem;
   padding-right: 60px;
@@ -51,11 +52,7 @@ html {
   box-shadow: 0 5px 5px -5px black;
   font: 4rem Roboto, sans-serif;
   color: white; 
-  text-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
-}
-
-.grid-container__text > div {
-  flex-grow: 1;
+  text-shadow: 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
 button {

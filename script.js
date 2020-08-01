@@ -15,12 +15,12 @@ function Calculator() {
   this.prevOperand = '';
   this.curOperand = '';
   this.method = null;
-  //this.displayNode  = document.querySelector()
   this.binaryOperator = 'true';
   
   this.updateView = function(char) { // divide into two functions: appendOp and updateDisplay
     if(char == '.' && this.curOperand.includes('.'))
       return;
+    if(this.curOperand[0] = '0')
     if(this.curOperand.length >= 15)
       return;
     
@@ -64,13 +64,13 @@ function Calculator() {
     const cur = Number(this.curOperand); 
     const prev = Number(this.prevOperand);
     let res = this.method(prev, cur);
-    this.curOperand = `${res}`;
     if(res.toString().length >= 15)
       res = res.toPrecision(5);
+    
+    this.curOperand = `${res}`;
     this.prevOperand = '';  
     this.method = null;
-    resultNode.textContent = ` = ${res}`;
-    //expressionNode.textContent = ' ';   
+    resultNode.textContent = ` = ${res}`;   
   }
 
   this.operateUn = function() {
@@ -81,14 +81,19 @@ function Calculator() {
     this.method = null; 
     resultNode.textContent = ` = ${res}`;
   }
+
   this.updateResult = function(){
+    if(this.curOperand == '')
+      return;
     expressionNode.textContent = this.curOperand;
+  
   } 
+
   this.clear = function() {
     this.prevOperand = '';
     this.curOperand = '';
     expressionNode.textContent = '';
-    resultNode.textContent = '0';
+    resultNode.textContent = '= 0';
     this.method = null;
   }
 
@@ -97,6 +102,16 @@ function Calculator() {
       return;
     this.curOperand = this.curOperand.slice(0, -1);
     expressionNode.textContent = expressionNode.textContent.slice(0, -1);
+  }
+
+  this.negativeSwitch = function() {
+    if(this.curOperand != '' || this.curOperand[0] == '-')
+      return;
+
+    this.curOperand += '-';
+    if(this.prevOperand != '')
+      expressionNode.textContent += ' ';
+    expressionNode.textContent += '-'
   }
 
   this.sum = function () {
@@ -158,8 +173,8 @@ const digits = document.querySelectorAll('.digits'),
       expressionNode = document.querySelector('.expression'),
       equalNode = document.querySelector('.equal'),
       clearNode = document.querySelector('.clear'),
-      backspaceNode = document.querySelector('.backspace');
-
+      backspaceNode = document.querySelector('.backspace'),
+      negativeSwitchNode = document.querySelector('.negative');
 for(const digitsElem of digits)
   digitsElem.addEventListener('click', () => calc.updateView(digitsElem.value));
 for(const operatorsElem of operators)
@@ -171,6 +186,8 @@ equalNode.addEventListener('click', () => {
   else 
     calc.operateUn();
   calc.updateResult();
-  });  
+  });
+
+negativeSwitchNode.addEventListener('click', () => {calc.negativeSwitch();});
 clearNode.addEventListener('click', () => calc.clear());
 backspaceNode.addEventListener('click', () => calc.backspace());
