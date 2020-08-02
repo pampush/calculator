@@ -69,6 +69,12 @@ function Queue() {
   this.isEmpty = function() {
     return !(this.s1.length  || this.s2.length);
   }
+  this.clear = function() {
+    while(this.s1.length)
+      this.s1.pop();
+    while(this.s2.length)
+      this.s2.pop();
+  }
 }
 
 /* let operands = new Queue();
@@ -84,15 +90,19 @@ let calc = {
   expression: '',
   method: null, 
   operate: function() {
-    let res = null;
+    let res = 0;
     while(!calc.operators.isEmpty()){
       const a = Number(calc.operands.dequeue());
       const b = Number(calc.operands.dequeue());
       const op = calc.operators.dequeue();
       res = this[op](a, b);
-      calc.operands.enqueueBegin(a+b);
+      calc.operands.enqueueBegin(res);
     }
     resultNode.textContent = `= ${res}`;
+    this.expression = `${res}`;
+    expressionNode.textContent = this.expression;
+    calc.operands.clear();
+    calc.operators.clear();
   },
 
   '+': function(a, b) {
@@ -101,7 +111,7 @@ let calc = {
   '-': function(a, b) {
     return a-b;
   },
-  'x  ': function(a, b) {
+  'x': function(a, b) {
     return a*b;
   },
   '/': function(a, b) {
