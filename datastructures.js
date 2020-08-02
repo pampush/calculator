@@ -141,21 +141,14 @@ let calc = {
   },
 
   parseString: function() {
-    this.operators.enqueue(calc.expression.match(/[\D]/g));
-    this.operands.enqueue(calc.expression.match(/[\d]+/g))
+    this.operators.enqueue(calc.expression.match(/[^\.\d]/g));
+    this.operands.enqueue(calc.expression.match(/\d+(\.\d+)?/g))
   },
 
   updateView: function() {
     
   }
 }
-
-
-
-/* calc.operands.enqueue(2,2,3);
-calc.operators.enqueue('+', '+');
-calc.operate(); */
-
 
 const digits = document.querySelectorAll('.digits'),
       operators = document.querySelectorAll('.operators'),
