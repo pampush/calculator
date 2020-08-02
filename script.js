@@ -8,11 +8,11 @@ function Calculator() {
   this.updateView = function(char) { 
     if(char == '.' && (this.curOperand.includes('.')  || this.curOperand == '')) // prevent leading '.' and multiple '.'
       return;
-    if(Number.isInteger(Number(char)) && this.curOperand[0] == '0' && !this.curOperand.includes('.') ) // prevent leading zeros  
+    if(this.curOperand[0] == '0' && Number.isInteger(Number(char)) && !this.curOperand.includes('.') ) // prevent leading zeros  
       return;
     if(this.curOperand.length >= 15) 
       return;
-    
+  
     this.curOperand += char;
     expressionNode.textContent += char;  
   };
