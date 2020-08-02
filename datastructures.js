@@ -88,7 +88,8 @@ let calc = {
   curOperand: '',
   prevOperand: '', 
   expression: '',
-  method: null, 
+  method: null,
+  log: [],
   operate: function() {
     let res = 0;
     while(!calc.operators.isEmpty()){
@@ -99,6 +100,7 @@ let calc = {
       calc.operands.enqueueBegin(res);
     }
     resultNode.textContent = `= ${res}`;
+    this.log.push(this.expression + '=' + res);
     this.expression = `${res}`;
     expressionNode.textContent = this.expression;
     calc.operands.clear();
@@ -141,10 +143,30 @@ let calc = {
   },
 
   parseString: function() {
-    this.operators.enqueue(calc.expression.match(/[\D]/g));
-    this.operands.enqueue(calc.expression.match(/[\d]+/g))
+    this.operators.enqueue(calc.expression.match(/[^\.\d]/g)); 
+    this.operands.enqueue(calc.expression.match(/\d+(\.\d+)?/g))
   },
-
+  validateOperand: function(char) { // leading zeros problem
+    this.expression += char;
+    let arr = this.expression.match(/\d+(\.\d+)?/g); // 1.12 valid num
+    let exc1 = this.expression.match(/\.\./g);
+    let exc2 = this.expression.match(/\d+\.\d+\./); // 1.2.
+    let exc3 = this.expression.match(/([^\d]\.)|^\./g); // ^.12 or 12+.12
+    if(exc1 || exc2 || exc3){
+      this.expression = this.expression.slice(0,-1);
+      return;
+    }
+    if(arr)
+      expressionNode.textContent += char;
+  },
+  validateOperator: function(char) {
+    this.expression += char;
+    let arr = this.expression.match(/[-+][-+]/g);
+    if(!arr)
+      expressionNode.textContent += char;
+    else
+      this.expression = this.expression.slice(0, -1);
+  },
   updateView: function() {
     
   }
@@ -168,9 +190,9 @@ const digits = document.querySelectorAll('.digits'),
 
 
 for(const digitsElem of digits)
-  digitsElem.addEventListener('click', () => calc.appendDigit(digitsElem.value) );
+  digitsElem.addEventListener('click', () => calc.validateOperand(digitsElem.value) /* calc.appendDigit(digitsElem.value)  */ );
 for(const operatorsElem of operators)
-  operatorsElem.addEventListener('click', () => calc.addOperator(operatorsElem.value) );
+  operatorsElem.addEventListener('click', () =>  calc.validateOperator(operatorsElem.value) /*  calc.addOperator(operatorsElem.value) */ );
 
 equalNode.addEventListener('click', () => { calc.parseString(); calc.operate(); calc.updateView(); });
 
