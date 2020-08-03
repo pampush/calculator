@@ -88,21 +88,10 @@ let calc = {
     return a/b;
   },
   parseString: function() {
-    let temp = null;
-    temp = calc.expression.match(/^\-\d+(\.\d+)?|\d+(\.\d+)?/g);
-    if(temp)
-      this.operands.enqueue(temp);
-    if(calc.expression.match(/^[\-]/)) // negative number handler
-      {
-        temp = calc.expression.substr(1).match(/[^\.\d]/g);
-        if(temp)
-          this.operators.enqueue(temp);   
-      }   
-    else {
-      temp = calc.expression.match(/[^\.\d]/g); 
-      if(temp) 
-        this.operators.enqueue(temp);
-    }
+    let arr = this.expression.match(/\d+(\.\d+)?/g); // number match
+    this.operands.enqueue(arr);
+    arr = this.expression.match(/[\D]/g); 
+    this.operators.enqueue(arr);
   },
   validateOperand: function(char) { // leading zeros problem
     this.expression += char;
