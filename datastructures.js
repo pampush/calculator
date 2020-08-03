@@ -1,33 +1,4 @@
-/* using objects for stack and queues is excessive 
-*
-*/
 "use strict"
-/* let stack = {
-  size: 0,
-  top: null,
-  push: function(data) {
-    let node = new Node(data);
-    this.size++;
-    node.previous = this.top;
-    this.top = node;
-    return node;
-  },
-  pop: function() {
-    if(!this.top){
-      console.log("ok");
-      return;}
-    this.top = this.top.previous;
-    this.size--;
-    return this.top;
-  }
-};
-
-function Node(data) {
-  this.data = data;
-  this.previous = null;
-} */
-
-
 function Queue() {
   this.s1 = [];
   this.s2 = [];
@@ -36,10 +7,7 @@ function Queue() {
       for(const item of data)
         this.s1.push(item);
     else
-      this.s1.push(data);
-        
-    
-    
+      this.s1.push(data); 
   };
   this.enqueueBegin = function(data){
     if(Array.isArray(data))
@@ -77,19 +45,20 @@ function Queue() {
   }
 }
 
-/* let operands = new Queue();
-let  operators = new Queue();
-operands.enqueue(2,2,3);
-operators.enqueue('+', '*'); */
-
 let calc = {
   operators: new Queue(),
   operands: new Queue(),
   curOperand: '',
   prevOperand: '', 
   expression: '',
-  method: null, 
+  method: null,
+  log: [],
   operate: function() {
+    if(calc.operators.isEmpty()) {
+      calc.operands.clear();
+      calc.operators.clear();
+      return;
+    }  
     let res = 0;
     while(!calc.operators.isEmpty()){
       const a = Number(calc.operands.dequeue());
@@ -99,6 +68,7 @@ let calc = {
       calc.operands.enqueueBegin(res);
     }
     resultNode.textContent = `= ${res}`;
+    this.log.push(this.expression + '=' + res);
     this.expression = `${res}`;
     expressionNode.textContent = this.expression;
     calc.operands.clear();
@@ -117,36 +87,56 @@ let calc = {
   '/': function(a, b) {
     return a/b;
   },
-  appendDigit: function(char) {
-    if(char == '.' && (this.curOperand.includes('.')  || this.curOperand == '')) // prevent leading '.' and multiple '.'
-      return;
-    if(this.curOperand[0] == '0' && Number.isInteger(Number(char)) && !this.curOperand.includes('.') ) // prevent leading zeros  
-      return;
-    if(this.curOperand.length >= 15) 
-      return;
-    
-    this.curOperand += char;
-    this.expression += char;
-    expressionNode.textContent += char;
+  parseString: function() {
+    let temp = null;
+    temp = calc.expression.match(/^\-\d+(\.\d+)?|\d+(\.\d+)?/g);
+    if(temp)
+      this.operands.enqueue(temp);
+    if(calc.expression.match(/^[\-]/)) // negative number handler
+      {
+        temp = calc.expression.substr(1).match(/[^\.\d]/g);
+        if(temp)
+          this.operators.enqueue(temp);   
+      }   
+    else {
+      temp = calc.expression.match(/[^\.\d]/g); 
+      if(temp) 
+        this.operators.enqueue(temp);
+    }
   },
-  addOperator: function(char) {
-    if(this.curOperand == ''){
-      this.operator = '';
+  validateOperand: function(char) { // leading zeros problem
+    this.expression += char;
+    let arr = this.expression.match(/\d+(\.\d+)?/g); // 1.12 valid num
+    let exc1 = this.expression.match(/\.\./g);
+    let exc2 = this.expression.match(/\d+\.\d+\./); // 1.2.
+    let exc3 = this.expression.match(/([^\d]\.)|^\./g); // ^.12 or 12+.12
+    if(exc1 || exc2 || exc3){
+      this.expression = this.expression.slice(0,-1);
       return;
     }
-    this.prevOperand = this.curOperand;
-    this.curOperand = '';
+    if(arr)
+      expressionNode.textContent += char;
+  },
+  validateOperator: function(char) {
     this.expression += char;
-    expressionNode.textContent += char;
+    let arr = this.expression.match(/[-+][-+]/g);
+    if(!arr)
+      expressionNode.textContent += char;
+    else
+      this.expression = this.expression.slice(0, -1);
   },
-
-  parseString: function() {
-    this.operators.enqueue(calc.expression.match(/[^\.\d]/g));
-    this.operands.enqueue(calc.expression.match(/\d+(\.\d+)?/g))
+  clear: function() {
+    this.expression = '';
+    this.operators.clear();
+    this.operands.clear();
+    expressionNode.textContent = '';
+    resultNode.textContent = '= 0';
   },
-
-  updateView: function() {
-    
+  backspace: function() {
+    if(expressionNode.textContent == '')
+      return;
+    this.expression = this.expression.slice(0, -1);
+    expressionNode.textContent = expressionNode.textContent.slice(0, -1);
   }
 }
 
@@ -161,15 +151,14 @@ const digits = document.querySelectorAll('.digits'),
 
 
 for(const digitsElem of digits)
-  digitsElem.addEventListener('click', () => calc.appendDigit(digitsElem.value) );
+  digitsElem.addEventListener('click', () => calc.validateOperand(digitsElem.value));
 for(const operatorsElem of operators)
-  operatorsElem.addEventListener('click', () => calc.addOperator(operatorsElem.value) );
+  operatorsElem.addEventListener('click', () =>  calc.validateOperator(operatorsElem.value));
 
-equalNode.addEventListener('click', () => { calc.parseString(); calc.operate(); calc.updateView(); });
-
-/* 
-negativeSwitchNode.addEventListener('click', () => {calc.negativeSwitch();});
+equalNode.addEventListener('click', () => { calc.parseString(); calc.operate(); });
+ 
+//negativeSwitchNode.addEventListener('click', () => {calc.negativeSwitch();});
 clearNode.addEventListener('click', () => calc.clear()); 
-backspaceNode.addEventListener('click', () => calc.updateView()); */
+backspaceNode.addEventListener('click', () => calc.backspace());
  
  
